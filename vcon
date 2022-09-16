@@ -1,0 +1,8 @@
+if [[ $# == 1 ]]
+then    
+    src_file=$1
+    ffmpeg -y -i $src_file -c:v libx264 -c:a aac -strict experimental -tune fastdecode -pix_fmt yuv420p -b:a 192k -ar 48000 output.mp4
+    mv output.mp4 $1
+else
+    echo "usage: vcon /path/src.ext"
+fi
