@@ -1,0 +1,36 @@
+#!/bin/bash
+# courtesy to chatgpt
+output_filename="output.mp4"
+# Usage: bash extract_video.sh --start <start_time> --end <end_time> --output <output_filename> <input_filename>
+
+while [[ $# -gt 1 ]]; do
+    key="$1"
+    case $key in
+        --start)
+            start_time="$2"
+            shift
+            ;;
+        --end)
+            end_time="$2"
+            shift
+            ;;
+        --output)
+            output_filename="$2"
+            shift
+            ;;
+        *)
+            echo "Unknown option: $key"
+            exit 1
+            ;;
+    esac
+    shift
+done
+
+input_filename="$1"
+
+if [[ -z $start_time || -z $end_time || -z $output_filename || -z $input_filename ]]; then
+    echo "Usage: bash extract_video.sh --start <start_time> --end <end_time> --output <output_filename> <input_filename>"
+    exit 1
+fi
+
+ffmpeg -ss "$start_time" -i "$input_filename" -t "$end_time" -c:v copy -c:a copy "$output_filename"
